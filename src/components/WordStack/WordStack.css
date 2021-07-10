@@ -1,0 +1,105 @@
+.wordstack {
+    font-family: sans-serif;
+    text-align: center;
+  }
+  
+  .words__word {
+    display: inline-block;
+    color: #fff;
+    padding: 20px 30px;
+    border: 2px solid goldenrod;
+    margin: 10px 15px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 3em;
+  }
+  
+  .words__word-enter {
+    opacity: 0;
+  }
+  .words__word-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+  }
+  .words__word-exit {
+    opacity: 1;
+  }
+  .words__word-exit-active {
+    opacity: 0;
+    transition: opacity 500ms ease-in;
+  }
+  
+  .words__word:first-child {
+    transform: scale(1.2);
+    font-weight: 500;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3);
+  }
+  
+  .words__input {
+    margin-top: 20px;
+  }
+  
+  .words--label {
+    margin-right: 10px;
+    font-size: 12px;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  
+  .words--keys {
+    border: none;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    text-transform: uppercase;
+    padding: 1em;
+    width: 40%;
+    text-align: center;
+    font-size: 2em;
+    border-radius: 20px;
+    background-color: #020144;
+    box-shadow: 0 0px 0px 4px rgba(255, 255, 255, 0.1);
+    color: azure;
+  }
+  
+  .words--keys:focus {
+    outline: none;
+    /* box-shadow: 0 20px 15px rgba(255, 255, 255, 0.2); */
+  }
+
+  .words--keys--correct { 
+    animation-name: correctWord;
+    animation-duration: 400ms;
+  }
+  
+  .words--keys--wrong { 
+    animation-name: wrongWord;
+    animation-duration: 400ms;
+  }
+
+
+  @keyframes correctWord {
+    0% {
+        box-shadow: 0 0px 0px 4px rgba(255, 255, 255, 0.1);
+    }
+    50% {
+        box-shadow: 0 0px 0px 4px rgba(110, 255, 0, 0.6);
+    }
+
+    100% {
+        box-shadow: 0 0px 0px 4px rgba(255, 255, 255, 0.1);
+    }
+  }
+
+  @keyframes wrongWord {
+    0% {
+        box-shadow: 0 0px 0px 4px rgba(255, 255, 255, 0.1);
+    }
+    50% {
+        box-shadow: 0 0px 0px 4px rgba(255, 0, 0, 0.6);
+    }
+
+    100% {
+        box-shadow: 0 0px 0px 4px rgba(255, 255, 255, 0.1);
+    }
+  }

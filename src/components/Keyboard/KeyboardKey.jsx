@@ -29,7 +29,7 @@ const KeyboardKey = (props) => {
     useKeyPress();
 
     return (
-        <button type="button" className={`keyboard__key ${active ? 'keyboard__key--press' : ''}`} >{letter}</button>
+        <button type="button" className={`keyboard__key ${active ? 'keyboard__key--press' : ''}`} >{letter.toUpperCase()}</button>
     )
 }
 
