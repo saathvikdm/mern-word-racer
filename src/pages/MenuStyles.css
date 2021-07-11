@@ -1,0 +1,43 @@
+.retry-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.save-score-page {
+    margin-top: 2em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.save-score-input {
+    border: none;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+    text-transform: uppercase;
+    padding: 1em;
+    width: 600px;
+    text-align: center;
+    font-size: 2em;
+    border-radius: 20px;
+    background-color: #020144;
+    box-shadow: 0 0px 0px 4px rgba(255, 255, 255, 0.1);
+    color: rgba(240, 255, 255, 0.4);
+    margin-bottom: 2em;
+}
+
+.save-score-input:focus {
+    outline: none;
+    box-shadow: 0 0px 0px 4px rgba(255, 255, 255, 0.6);
+  }
+
+.high-scores-page {
+    font-family: 'Carter One', sans-serif;
+    color: white;
+    margin: 1em;
+    letter-spacing: .1em;
+    text-shadow: 2px 2px 1px #0066a2, -2px 2px 1px #0066a2, 2px -2px 1px #0066a2, -2px -2px 1px #0066a2, 0px 2px 1px #0066a2, 0px -2px 1px #0066a2, 0px 4px 1px #004a87, 2px 4px 1px #004a87, -2px 4px 1px #004a87;
+}

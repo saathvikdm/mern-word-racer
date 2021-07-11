@@ -16,7 +16,9 @@ code {
   display: flex;
   height: 100vh;
   width: 100vw;
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
+  justify-content: center;
   flex-direction: column;
   background-color: #020144;
+  align-items: center;
 }
