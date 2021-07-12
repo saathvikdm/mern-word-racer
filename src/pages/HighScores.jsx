@@ -8,22 +8,24 @@ import { Link } from 'react-router-dom'
 export default function SaveScorePage() {
 
     const [scores, setScores] = useState(null);
+    const [allScores, setAllScores] = useState(null);
 
     useEffect(() => {
         // axios.get('http://localhost:5000/scores').then(({ data }) => setScores(data)).catch((err) => console.log(err));
         axios.get('https://word-racer-server.herokuapp.com/scores').then(({ data }) => setScores(data)).catch((err) => console.log(err));
+        axios.get('https://word-racer-server.herokuapp.com/scores/all').then(({ data }) => setAllScores(data)).catch((err) => console.log(err));
     }, [])
 
     let average = 0;
 
-    if (scores) {
+    if (allScores) {
 
 
-        for (let i = 0; i < scores.length; i++) {
-            average = average + scores[i].score;
+        for (let i = 0; i < allScores.length; i++) {
+            average = average + allScores[i].score;
         }
 
-        average = (average / scores.length).toFixed(0);
+        average = (average / allScores.length).toFixed(0);
     }
 
     return (
