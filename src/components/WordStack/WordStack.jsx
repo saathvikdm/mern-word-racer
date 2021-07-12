@@ -7,7 +7,7 @@ import ArrayShuffle from "../../utils/ArrayShuffle";
 
 export default function WordStack(props) {
 
-    const { score, setScore, setLevel, isActive, setActive, level } = useContext(ScoreContext);
+    const { score, setScore, setLevel, isActive, setActive, level, multiplier, setMultiplier } = useContext(ScoreContext);
 
     const words = props.words;
     const setWords = props.handleWordStack;
@@ -24,7 +24,9 @@ export default function WordStack(props) {
     const [time, setTime] = useState(null);
     const [elapsedTime, setElapsedTime] = useState(null);
 
-    const [wordCountdown, setWordCountdown] = useState(3000);
+
+
+    const wordCountdown = 3000;
 
     useEffect(() => {
 
@@ -47,6 +49,7 @@ export default function WordStack(props) {
 
         if (words.length === 7) {
             // alert("Game Over");
+            setMultiplier(0);
             setActive(false);
             return;
         }
@@ -66,6 +69,11 @@ export default function WordStack(props) {
 
         let [firstWord] = words;
 
+        if (keyInput.length === firstWord.length && firstWord.toUpperCase() !== (keyInput).toUpperCase()) {
+            setMultiplier(1);
+            // console.log("Multiplier reset: " + multiplier);
+        }
+
         if (words && firstWord.toUpperCase() === (keyInput).toUpperCase()) {
             setElapsedTime(Date.now());
 
@@ -76,13 +84,15 @@ export default function WordStack(props) {
 
             if (score === 0 || timeSpent < 0) { setScore(prevState => prevState + DEFAULT_SCORE); }
             else {
-                setScore(prevState => prevState + Math.floor((DEFAULT_SCORE - (timeSpent * 10))));
+                setScore(prevState => prevState + Math.floor((DEFAULT_SCORE * multiplier - (timeSpent * 10))));
             }
 
             // console.log("matched");
             let temp = words;
             temp.splice(0, 1);
             setWords(temp);
+            setMultiplier((multiplier * 1.2).toFixed(2));
+            // console.log("Multiplier: " + multiplier);
             setCorrect(true);
 
             setTimeout(() => { setCorrect(false); }, 400);

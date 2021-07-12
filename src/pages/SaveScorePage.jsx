@@ -11,14 +11,18 @@ export default function SaveScorePage() {
 
     const { score, level } = useContext(ScoreContext);
     const [username, setUsername] = useState(null);
+    const [saved, setSaved] = useState(0);
 
     const data = { username, score, level };
 
     function handleSave() {
+        setSaved(1);
         axios
             .post(`https://word-racer-server.herokuapp.com/scores`, data)
             .then((res) => {
-                alert("Saved Successfully");
+                setSaved(2);
+                // alert("Saved Successfully");
+                setTimeout(() => { setSaved(0) }, 3000)
             })
             .catch((err) => console.log(err));
     }
@@ -28,7 +32,7 @@ export default function SaveScorePage() {
             <Score />
             <div className="save-score-page">
                 <input type="text" className="save-score-input" placeholder="Enter Username" onChange={(e) => setUsername(e.target.value)} />
-                <SaveScore handleSave={handleSave} />
+                <SaveScore handleSave={handleSave} saved={saved} />
                 <Link to="/">
                     <GoBack />
                 </Link>

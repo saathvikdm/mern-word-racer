@@ -14,10 +14,27 @@ export default function SaveScorePage() {
         axios.get('https://word-racer-server.herokuapp.com/scores').then(({ data }) => setScores(data)).catch((err) => console.log(err));
     }, [])
 
+    let average = 0;
+
+    if (scores) {
+
+
+        for (let i = 0; i < scores.length; i++) {
+            average = average + scores[i].score;
+        }
+
+        average = (average / scores.length).toFixed(0);
+    }
 
     return (
         <div className="high-scores-page">
             <h1>High Scores</h1>
+            <table>
+                <tr className="high-scores-header">
+                    <th className="high-scores-column">Average score: {average ? average : ""}</th>
+                    <th className="high-scores-column">Max level reached: {scores ? scores[0].level : ""}</th>
+                </tr>
+            </table>
             <table className="high-scores-table">
                 <thead>
                     <tr className="high-scores-header">

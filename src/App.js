@@ -14,10 +14,11 @@ function App() {
     const [level, setLevel] = useState(1);
     const [isActive, setActive] = useState(true);
     const [start, setStart] = useState(false);
+    const [multiplier, setMultiplier] = useState(1);
 
     return (
         <div className="app">
-          <ScoreContext.Provider value={{score, setScore, level, setLevel, isActive, setActive }}>
+          <ScoreContext.Provider value={{score, setScore, level, setLevel, isActive, setActive, multiplier, setMultiplier }}>
           <Switch>
             <Route path="/high-scores">
                 <HighScores/>

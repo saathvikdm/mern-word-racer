@@ -30,10 +30,15 @@ function PlayButtons(props) {
     )
 }
 
+function SaveButton(props) {
+    return (<button className="game-button green">Save Score</button>)
+}
+
 function SaveScore(props) {
     const handleSave = props.handleSave;
+    const saved = props.saved;
     return (
-        <button className="game-button green" onClick={handleSave}>Save Score</button>
+        <button className="game-button green" onClick={handleSave}>{saved === 0 ? "Save Score" : saved === 1 ? "Saving..." : "Success"}</button>
     )
 }
 
@@ -49,4 +54,4 @@ function GoBack(props) {
     )
 }
 
-export { Play, PlayButtons, SaveScore, HighScores, GoBack };
+export { Play, PlayButtons, SaveButton, SaveScore, HighScores, GoBack };
