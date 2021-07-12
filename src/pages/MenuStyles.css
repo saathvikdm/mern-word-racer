@@ -36,9 +36,34 @@
   }
 
 .high-scores-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
     font-family: 'Carter One', sans-serif;
     color: white;
     margin: 1em;
     letter-spacing: .1em;
     text-shadow: 2px 2px 1px #0066a2, -2px 2px 1px #0066a2, 2px -2px 1px #0066a2, -2px -2px 1px #0066a2, 0px 2px 1px #0066a2, 0px -2px 1px #0066a2, 0px 4px 1px #004a87, 2px 4px 1px #004a87, -2px 4px 1px #004a87;
+}
+
+.high-scores-table {
+    text-align: center;
+    margin: 1em 0;
+    background-color: rgba(218, 165, 32);
+    border-radius: 20px;
+    padding: 1em;
+}
+
+.high-scores-header {
+    background: #004a87;
+}
+
+.high-scores-row {
+    background: #0066a2;
+}
+
+.high-scores-column {
+    font-size: 1.1em;
+    padding: 1rem;
 }

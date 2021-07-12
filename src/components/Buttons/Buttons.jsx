@@ -2,6 +2,15 @@ import React, { useContext } from 'react'
 import { ScoreContext } from '../../context/scoreContext';
 import './Buttons.css'
 
+function Play(props) {
+
+    const handlePlay = props.handlePlay;
+
+    return (
+        <button className="game-button" onClick={handlePlay}>Start</button>
+    )
+}
+
 
 function PlayButtons(props) {
 
@@ -40,4 +49,4 @@ function GoBack(props) {
     )
 }
 
-export { PlayButtons, SaveScore, HighScores, GoBack };
+export { Play, PlayButtons, SaveScore, HighScores, GoBack };

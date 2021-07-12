@@ -11,7 +11,7 @@ export default function Game() {
     const [wordStack, setWordStack] = useState([]);
 
     const getWords = async () => {
-        await axios.get('https://random-word-api.herokuapp.com/word?number=5').then(({ data }) => setWordStack(data)).catch((err) => console.log(err));
+        await axios.get('https://random-word-api.herokuapp.com/word?number=4').then(({ data }) => setWordStack(data)).catch((err) => console.log(err));
     }
 
     if (!init) {

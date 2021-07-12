@@ -6,12 +6,14 @@ import SaveScorePage from './pages/SaveScorePage';
 import { Switch, Route, Redirect } from "react-router-dom";
 import HighScores from './pages/HighScores'
 import Game from './pages/Game';
+import Instructions from './components/Instructions/Instructions';
 
 function App() {
 
     const [score, setScore] = useState(0);
     const [level, setLevel] = useState(1);
     const [isActive, setActive] = useState(true);
+    const [start, setStart] = useState(false);
 
     return (
         <div className="app">
@@ -24,7 +26,7 @@ function App() {
                 {score !== 0 ? <SaveScorePage/>: <Redirect to="/"/>}
             </Route>
             <Route exact path="/">
-                {isActive ? <Game/> : <RetryMenu />}
+                { start ? (isActive ? <Game/> : <RetryMenu />) : <Instructions setInit={setStart}/>}
             </Route>
                 
            </Switch>

@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { SaveScore } from '../components/Buttons/Buttons';
 import Score from '../components/Score/Score';
 import { ScoreContext } from '../context/scoreContext';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { GoBack } from '../components/Buttons/Buttons';
 import axios from 'axios';
 
@@ -16,7 +16,7 @@ export default function SaveScorePage() {
 
     function handleSave() {
         axios
-            .post(`http://localhost:5000/scores`, data)
+            .post(`https://word-racer-server.herokuapp.com/scores`, data)
             .then((res) => {
                 alert("Saved Successfully");
             })

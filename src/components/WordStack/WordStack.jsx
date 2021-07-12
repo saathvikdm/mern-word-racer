@@ -2,7 +2,7 @@ import "./WordStack.css";
 import { useState, useRef, useEffect, useContext } from "react";
 import { v4 as uuid } from "uuid";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { ScoreContext, TimeContext } from "../../context/scoreContext";
+import { ScoreContext } from "../../context/scoreContext";
 import ArrayShuffle from "../../utils/ArrayShuffle";
 
 export default function WordStack(props) {
@@ -31,12 +31,12 @@ export default function WordStack(props) {
         if (score >= 300 * level) {
             setLevel(prevState => prevState + 1);
         }
-        let levelUpTimer = wordCountdown - ((wordCountdown / 10) * level);
+        let levelUpTimer = (wordCountdown - ((wordCountdown / 10) * level)) > 1200 ? wordCountdown - ((wordCountdown / 10) * level) : 1200;
 
         setTimeout(() => {
             let data = ArrayShuffle([...randomWords])
             let d = data.pop();
-            console.log(d);
+            // console.log(d);
             let temp = [...words];
             temp.push(d);
             setRandomWords(data);
@@ -49,11 +49,6 @@ export default function WordStack(props) {
             // alert("Game Over");
             setActive(false);
             return;
-        }
-
-        if (words.length === 0) {
-            setActive(false);
-            console.log("finish");
         }
 
         if (isActive && typed === "") {
@@ -73,17 +68,18 @@ export default function WordStack(props) {
 
         if (words && firstWord.toUpperCase() === (keyInput).toUpperCase()) {
             setElapsedTime(Date.now());
-            let timeSpent = (time - elapsedTime) / 1000;
-            console.log(timeSpent);
+
+            let timeSpent = elapsedTime ? ((time - elapsedTime) / 1000) : 0;
+
             setKeyInput('');
             inputRef.current.value = "";
 
-            if (score === 0) { setScore(prevState => prevState + DEFAULT_SCORE); }
+            if (score === 0 || timeSpent < 0) { setScore(prevState => prevState + DEFAULT_SCORE); }
             else {
                 setScore(prevState => prevState + Math.floor((DEFAULT_SCORE - (timeSpent * 10))));
             }
 
-            console.log("matched");
+            // console.log("matched");
             let temp = words;
             temp.splice(0, 1);
             setWords(temp);
@@ -93,11 +89,7 @@ export default function WordStack(props) {
 
         } else {
             setTime(Date.now());
-            console.log("didnt match. removing word");
-        }
-
-        if (words.length === 0) {
-            setActive(false);
+            // console.log("didnt match. removing word");
         }
     };
 
@@ -108,7 +100,7 @@ export default function WordStack(props) {
                 <>
                     <div className="wordstack">
                         <TransitionGroup className="words">
-                            {words.map((w, i) => {
+                            {words ? words.map((w, i) => {
                                 return (
                                     <CSSTransition key={i} timeout={500} classNames="words">
                                         <div className="words__word" key={uuid()}>
@@ -116,7 +108,7 @@ export default function WordStack(props) {
                                         </div>
                                     </CSSTransition>
                                 );
-                            })}
+                            }) : "Loading..."}
                         </TransitionGroup>
 
                         <div className="words__input">
@@ -131,7 +123,6 @@ export default function WordStack(props) {
                         </div>
                     </div>
                 </>
-                // : <PlayButtons reset={resetGame} />}
                 : ""}
         </>
     );
