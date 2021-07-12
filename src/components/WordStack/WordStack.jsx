@@ -2,19 +2,17 @@ import "./WordStack.css";
 import { useState, useRef, useEffect, useContext } from "react";
 import { v4 as uuid } from "uuid";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { ScoreContext } from "../../context/scoreContext";
+import { ScoreContext, TimeContext } from "../../context/scoreContext";
 import ArrayShuffle from "../../utils/ArrayShuffle";
 
 export default function WordStack(props) {
 
-    const { score, setScore, setLevel, isActive, setActive } = useContext(ScoreContext);
+    const { score, setScore, setLevel, isActive, setActive, level } = useContext(ScoreContext);
 
     const words = props.words;
     const setWords = props.handleWordStack;
 
     const [randomWords, setRandomWords] = useState(["cleannesses", "deceivable", "enfeebled", "cattle", "recrudesce", "propagandizing", "epigrapher", "grandeur", "sporulating", "proglottis", "vanpoolings", "cohosted", "drains", "untitled", "moundbirds", "circumstantial", "curricles", "thrombus", "repellents", "weirdie", "contrivers", "pedometer", "fanaticism", "exchanged", "harmfulness", "rearousing", "hysterectomy", "digressional", "tomcats", "prelector", "stakeout", "signalizes", "fictionalized", "clank", "unicolor", "nulled", "kittens", "algometers", "reactions", "referral", "aures", "multimode", "tonne", "wildlings", "armlets", "toilsome", "priggisms", "tacklings", "academician", "paupered"]);
-
-    // const randomWords = props.randomWords;
 
     const DEFAULT_SCORE = 100;
 
@@ -23,8 +21,17 @@ export default function WordStack(props) {
     const inputRef = useRef();
     const [keyInput, setKeyInput] = useState(null);
 
+    const [time, setTime] = useState(null);
+    const [elapsedTime, setElapsedTime] = useState(null);
+
+    const [wordCountdown, setWordCountdown] = useState(3000);
+
     useEffect(() => {
 
+        if (score >= 300 * level) {
+            setLevel(prevState => prevState + 1);
+        }
+        let levelUpTimer = wordCountdown - ((wordCountdown / 10) * level);
 
         setTimeout(() => {
             let data = ArrayShuffle([...randomWords])
@@ -34,12 +41,12 @@ export default function WordStack(props) {
             temp.push(d);
             setRandomWords(data);
             setWords(temp);
-        }, 3000)
+        }, levelUpTimer)
 
         setActive(true);
 
         if (words.length === 7) {
-            alert("Game Over");
+            // alert("Game Over");
             setActive(false);
             return;
         }
@@ -64,21 +71,28 @@ export default function WordStack(props) {
 
         let [firstWord] = words;
 
-        if (firstWord.toUpperCase() === (keyInput).toUpperCase()) {
+        if (words && firstWord.toUpperCase() === (keyInput).toUpperCase()) {
+            setElapsedTime(Date.now());
+            let timeSpent = (time - elapsedTime) / 1000;
+            console.log(timeSpent);
             setKeyInput('');
             inputRef.current.value = "";
-            setScore(prevState => prevState + DEFAULT_SCORE);
+
+            if (score === 0) { setScore(prevState => prevState + DEFAULT_SCORE); }
+            else {
+                setScore(prevState => prevState + Math.floor((DEFAULT_SCORE - (timeSpent * 10))));
+            }
+
             console.log("matched");
             let temp = words;
             temp.splice(0, 1);
             setWords(temp);
             setCorrect(true);
-            if (score >= 200 && score % 200 === 0) {
-                setLevel(prevState => prevState + 1)
-            }
+
             setTimeout(() => { setCorrect(false); }, 400);
 
         } else {
+            setTime(Date.now());
             console.log("didnt match. removing word");
         }
 

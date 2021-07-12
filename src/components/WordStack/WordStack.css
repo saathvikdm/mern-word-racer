@@ -15,6 +15,7 @@
     letter-spacing: 2px;
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
     margin-bottom: 3em;
+    text-shadow: none;
   }
   
   .words__word-enter {

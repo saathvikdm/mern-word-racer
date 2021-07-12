@@ -15,6 +15,7 @@ export default function RetryMenu() {
     return (
         <div className="retry-menu">
             <Score />
+            <h3 className="retry-menu-info">Stack limit reached</h3>
             <PlayButtons reset={resetGame} />
             <Link to="/save-score">
                 <SaveScore />

@@ -21,4 +21,9 @@ code {
   flex-direction: column;
   background-color: #020144;
   align-items: center;
+  font-family: 'Carter One', sans-serif;
+  color: white;
+  letter-spacing: .1em;
+  text-shadow: 2px 2px 1px #0066a2, -2px 2px 1px #0066a2, 2px -2px 1px #0066a2, -2px -2px 1px #0066a2, 0px 2px 1px #0066a2, 0px -2px 1px #0066a2, 0px 4px 1px #004a87, 2px 4px 1px #004a87, -2px 4px 1px #004a87;
+  
 }
