@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import './components/Keyboard/Keyboard.css'
 import { ScoreContext } from './context/scoreContext';
 import RetryMenu from './pages/RetryMenu';
