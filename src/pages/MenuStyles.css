@@ -25,11 +25,12 @@
     border-radius: 20px;
     background-color: #020144;
     box-shadow: 0 0px 0px 4px rgba(255, 255, 255, 0.1);
-    color: rgba(240, 255, 255, 0.4);
+    color: rgba(240, 255, 255, 0.753);
     margin-bottom: 2em;
 }
 
 .save-score-input:focus {
+    content: "";
     outline: none;
     box-shadow: 0 0px 0px 4px rgba(255, 255, 255, 0.6);
   }

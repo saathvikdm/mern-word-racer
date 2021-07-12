@@ -3,23 +3,46 @@ import { useState, useRef, useEffect, useContext } from "react";
 import { v4 as uuid } from "uuid";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { ScoreContext } from "../../context/scoreContext";
+import ArrayShuffle from "../../utils/ArrayShuffle";
 
-export default function WordStack() {
+export default function WordStack(props) {
 
-    const { score, setScore, setLevel, isActive, setActive, wordStack, setWordStack } = useContext(ScoreContext);
+    const { score, setScore, setLevel, isActive, setActive } = useContext(ScoreContext);
+
+    const words = props.words;
+    const setWords = props.handleWordStack;
+
+    const [randomWords, setRandomWords] = useState(["cleannesses", "deceivable", "enfeebled", "cattle", "recrudesce", "propagandizing", "epigrapher", "grandeur", "sporulating", "proglottis", "vanpoolings", "cohosted", "drains", "untitled", "moundbirds", "circumstantial", "curricles", "thrombus", "repellents", "weirdie", "contrivers", "pedometer", "fanaticism", "exchanged", "harmfulness", "rearousing", "hysterectomy", "digressional", "tomcats", "prelector", "stakeout", "signalizes", "fictionalized", "clank", "unicolor", "nulled", "kittens", "algometers", "reactions", "referral", "aures", "multimode", "tonne", "wildlings", "armlets", "toilsome", "priggisms", "tacklings", "academician", "paupered"]);
+
+    // const randomWords = props.randomWords;
 
     const DEFAULT_SCORE = 100;
-
-    const [words, setWords] = useState(wordStack.slice(0, 6));
 
     const [typed, setTyped] = useState("");
     const [correct, setCorrect] = useState(null);
     const inputRef = useRef();
-
+    const [keyInput, setKeyInput] = useState(null);
 
     useEffect(() => {
 
+
+        setTimeout(() => {
+            let data = ArrayShuffle([...randomWords])
+            let d = data.pop();
+            console.log(d);
+            let temp = [...words];
+            temp.push(d);
+            setRandomWords(data);
+            setWords(temp);
+        }, 3000)
+
         setActive(true);
+
+        if (words.length === 7) {
+            alert("Game Over");
+            setActive(false);
+            return;
+        }
 
         if (words.length === 0) {
             setActive(false);
@@ -28,11 +51,8 @@ export default function WordStack() {
 
         if (isActive && typed === "") {
             inputRef.current.focus();
-            inputRef.current.value = "";
         }
-    }, [typed, words, setActive, isActive]);
-
-
+    }, [typed, words, setActive, isActive, setWords]);
 
     const handleKeyUp = ({ key }) => {
 
@@ -44,27 +64,26 @@ export default function WordStack() {
 
         let [firstWord] = words;
 
-        if (typed.length < firstWord.length - 1) {
-            setTyped(typed + key);
-        } else {
-            setTyped(typed + key);
-            if (firstWord.toUpperCase() === (typed + key).toUpperCase()) {
-                setCorrect(true);
-                setScore(prevState => prevState + DEFAULT_SCORE);
-                console.log("matched");
-                let temp = words;
-                temp.splice(0, 1);
-                setWords(temp);
-                setTimeout(() => setCorrect(null), 400)
-                if (score >= 200 && score % 200 === 0) {
-                    setLevel(prevState => prevState + 1)
-                }
-            } else {
-                setCorrect(false);
-                setTimeout(() => setCorrect(null), 400)
-                console.log("didnt match. removing word");
+        if (firstWord.toUpperCase() === (keyInput).toUpperCase()) {
+            setKeyInput('');
+            inputRef.current.value = "";
+            setScore(prevState => prevState + DEFAULT_SCORE);
+            console.log("matched");
+            let temp = words;
+            temp.splice(0, 1);
+            setWords(temp);
+            setCorrect(true);
+            if (score >= 200 && score % 200 === 0) {
+                setLevel(prevState => prevState + 1)
             }
-            setTyped("");
+            setTimeout(() => { setCorrect(false); }, 400);
+
+        } else {
+            console.log("didnt match. removing word");
+        }
+
+        if (words.length === 0) {
+            setActive(false);
         }
     };
 
@@ -88,9 +107,10 @@ export default function WordStack() {
 
                         <div className="words__input">
                             <input
+                                onChange={(e) => setKeyInput(e.target.value)}
                                 ref={inputRef}
                                 type="text"
-                                className={`words--keys ${correct === null ? '' : correct ? "words--keys--correct" : 'words--keys--wrong'}`}
+                                className={`words--keys ${correct ? "words--keys--correct" : ''}`}
                                 id="keys"
                                 onKeyUp={(e) => handleKeyUp(e)}
                             />
