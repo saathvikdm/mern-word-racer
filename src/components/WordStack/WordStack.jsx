@@ -14,6 +14,8 @@ export default function WordStack(props) {
 
     const [randomWords, setRandomWords] = useState(["cleannesses", "deceivable", "enfeebled", "cattle", "recrudesce", "propagandizing", "epigrapher", "grandeur", "sporulating", "proglottis", "vanpoolings", "cohosted", "drains", "untitled", "moundbirds", "circumstantial", "curricles", "thrombus", "repellents", "weirdie", "contrivers", "pedometer", "fanaticism", "exchanged", "harmfulness", "rearousing", "hysterectomy", "digressional", "tomcats", "prelector", "stakeout", "signalizes", "fictionalized", "clank", "unicolor", "nulled", "kittens", "algometers", "reactions", "referral", "aures", "multimode", "tonne", "wildlings", "armlets", "toilsome", "priggisms", "tacklings", "academician", "paupered"]);
 
+
+
     const DEFAULT_SCORE = 100;
 
     const [typed, setTyped] = useState("");
@@ -24,6 +26,9 @@ export default function WordStack(props) {
     const [time, setTime] = useState(null);
     const [elapsedTime, setElapsedTime] = useState(null);
 
+    const [wordMatch, setWordMatch] = useState([]);
+
+    let selWords = [];
 
 
     const wordCountdown = 3000;
@@ -57,6 +62,8 @@ export default function WordStack(props) {
         if (isActive && typed === "") {
             inputRef.current.focus();
         }
+
+
     }, [typed, words, setActive, isActive, setWords]);
 
     const handleKeyUp = ({ key }) => {
@@ -68,6 +75,16 @@ export default function WordStack(props) {
 
 
         let [firstWord] = words;
+
+        words.forEach(word => {
+            if(key === word[0][key.length - 1]) {
+                console.log("Matched: " + word);
+                selWords.push(word);
+                setWordMatch(selWords);
+            }
+        });
+        
+        
 
         if (keyInput.length === firstWord.length && firstWord.toUpperCase() !== (keyInput).toUpperCase()) {
             setMultiplier(1);
@@ -110,13 +127,20 @@ export default function WordStack(props) {
                 <>
                     <div className="wordstack">
                         <TransitionGroup className="words">
-                            {words ? words.map((w, i) => {
+                            {words ? words.map((w, i) => { 
                                 return (
-                                    <CSSTransition key={i} timeout={500} classNames="words">
-                                        <div className="words__word" key={uuid()}>
-                                            {w}
-                                        </div>
-                                    </CSSTransition>
+                                wordMatch.includes(w) ? 
+                                        <CSSTransition key={i} timeout={500} classNames="words">
+                                            <div className="words__word words__word--sel" key={uuid()}>
+                                               {w}
+                                            </div>
+                                        </CSSTransition>
+                                    : 
+                                        <CSSTransition key={i} timeout={500} classNames="words">
+                                            <div className="words__word" key={uuid()}>
+                                               {w}
+                                            </div>
+                                        </CSSTransition> 
                                 );
                             }) : "Loading..."}
                         </TransitionGroup>
