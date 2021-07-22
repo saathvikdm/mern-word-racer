@@ -14,6 +14,8 @@ function App() {
   const [isActive, setActive] = useState(true);
   const [start, setStart] = useState(false);
   const [multiplier, setMultiplier] = useState(1);
+  const [saved, setSaved] = useState(0);
+  const [username, setUsername] = useState(null);
 
   return (
     <div className="app">
@@ -27,6 +29,10 @@ function App() {
           setActive,
           multiplier,
           setMultiplier,
+          saved,
+          setSaved,
+          username,
+          setUsername,
         }}
       >
         <Switch>

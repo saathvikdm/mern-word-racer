@@ -6,10 +6,11 @@ import Score from '../components/Score/Score';
 import { Link } from 'react-router-dom';
 
 export default function RetryMenu() {
-    const { setActive } = useContext(ScoreContext);
+    const { setActive, setSaved } = useContext(ScoreContext);
 
     function resetGame() {
         setActive(true);
+        setSaved(0);
     }
 
     return (

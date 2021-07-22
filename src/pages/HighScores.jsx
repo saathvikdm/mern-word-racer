@@ -58,7 +58,6 @@ export default function SaveScorePage() {
                             </tr>
                         )) : "loading"
                     }
-
                 </tbody>
             </table>
 
