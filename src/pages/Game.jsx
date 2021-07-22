@@ -10,13 +10,14 @@ export default function Game() {
     const [init, setInit] = useState(false);
 
     const [wordStack, setWordStack] = useState([]);
+    let randomWords = [];
 
     // const [currWord]
 
     const { setMultiplier } = useContext(ScoreContext);
 
-    const getWords = async () => {
-        await axios.get('https://random-word-api.herokuapp.com/word?number=50').then(({ data }) => setWordStack(data.splice(0, 4))).catch((err) => console.log(err));
+    const getWords = () => {
+        axios.get('https://random-word-api.herokuapp.com/word?number=4').then(({ data }) => {setWordStack(data.splice(0, 4)); randomWords = data.splice(4,100)}).catch((err) => console.log(err));
     }
 
     if (!init) {
@@ -28,7 +29,7 @@ export default function Game() {
     return (
         <>
             <Score />
-            {wordStack.length === 0 ? "Loading..." : <WordStack words={wordStack} handleWordStack={setWordStack} />}
+            {wordStack.length === 0 ? "Loading..." : <WordStack words={wordStack} handleWordStack={setWordStack} randomWords={randomWords}/>}
             <Keyboard />
         </>
     )

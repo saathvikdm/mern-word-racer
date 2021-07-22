@@ -1,7 +1,5 @@
 import "./WordStack.css";
 import { useState, useRef, useEffect, useContext } from "react";
-import { v4 as uuid } from "uuid";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { ScoreContext } from "../../context/scoreContext";
 import ArrayShuffle from "../../utils/ArrayShuffle";
 
@@ -21,15 +19,14 @@ export default function WordStack(props) {
     const [typed, setTyped] = useState("");
     const [correct, setCorrect] = useState(null);
     const inputRef = useRef();
-    const [keyInput, setKeyInput] = useState(null);
+    const [keyInput, setKeyInput] = useState('');
 
     const [time, setTime] = useState(null);
     const [elapsedTime, setElapsedTime] = useState(null);
 
-    const [wordMatch, setWordMatch] = useState([]);
-
-    let selWords = [];
-
+    
+    let wordMatch;
+    let selWordIndex;
 
     const wordCountdown = 3000;
 
@@ -62,9 +59,24 @@ export default function WordStack(props) {
         if (isActive && typed === "") {
             inputRef.current.focus();
         }
-
-
     }, [typed, words, setActive, isActive, setWords]);
+
+    function highlightMatchedText(text, highlight, i) {
+
+        const highlighted = new RegExp(`^(${highlight})`, 'iy');
+        const parts = text.split(highlighted);
+
+        if(parts[0] === '' && parts[2] === '') {
+            selWordIndex = words.indexOf(parts[1]);
+            wordMatch = parts[1];
+        }
+
+        return <div key={i} className='words__word'> { parts.map((part, i) => 
+            <span className={part.toUpperCase() === highlight.toUpperCase() ? "words__word--sel" : '' } key={i} >
+                { part }
+            </span>)
+        } </div>;
+    }
 
     const handleKeyUp = ({ key }) => {
 
@@ -73,25 +85,9 @@ export default function WordStack(props) {
             return;
         }
 
-
-        let [firstWord] = words;
-
-        words.forEach(word => {
-            if(key === word[0][key.length - 1]) {
-                console.log("Matched: " + word);
-                selWords.push(word);
-                setWordMatch(selWords);
-            }
-        });
+        let word = wordMatch;
         
-        
-
-        if (keyInput.length === firstWord.length && firstWord.toUpperCase() !== (keyInput).toUpperCase()) {
-            setMultiplier(1);
-            // console.log("Multiplier reset: " + multiplier);
-        }
-
-        if (words && firstWord.toUpperCase() === (keyInput).toUpperCase()) {
+        if (words && word && word.toUpperCase() === (keyInput).toUpperCase()) {
             setElapsedTime(Date.now());
 
             let timeSpent = elapsedTime ? ((time - elapsedTime) / 1000) : 0;
@@ -106,7 +102,7 @@ export default function WordStack(props) {
 
             // console.log("matched");
             let temp = words;
-            temp.splice(0, 1);
+            temp.splice(selWordIndex, 1);
             setWords(temp);
             setMultiplier((multiplier * 1.2).toFixed(2));
             // console.log("Multiplier: " + multiplier);
@@ -116,9 +112,14 @@ export default function WordStack(props) {
 
         } else {
             setTime(Date.now());
-            // console.log("didnt match. removing word");
         }
     };
+
+    const handleKeyDown = (e) => {
+        if(e.keyCode === 8) {
+            setMultiplier(1);
+        }
+    }
 
 
     return (
@@ -126,33 +127,22 @@ export default function WordStack(props) {
             {isActive ?
                 <>
                     <div className="wordstack">
-                        <TransitionGroup className="words">
-                            {words ? words.map((w, i) => { 
-                                return (
-                                wordMatch.includes(w) ? 
-                                        <CSSTransition key={i} timeout={500} classNames="words">
-                                            <div className="words__word words__word--sel" key={uuid()}>
-                                               {w}
-                                            </div>
-                                        </CSSTransition>
-                                    : 
-                                        <CSSTransition key={i} timeout={500} classNames="words">
-                                            <div className="words__word" key={uuid()}>
-                                               {w}
-                                            </div>
-                                        </CSSTransition> 
-                                );
-                            }) : "Loading..."}
-                        </TransitionGroup>
+                        {words.map((elem, i) => highlightMatchedText(elem, keyInput, i))}
 
                         <div className="words__input">
                             <input
-                                onChange={(e) => setKeyInput(e.target.value)}
+                                onChange={(e) => { 
+                                    let re = /[0-9a-zA-Z]+/g; 
+                                    if (re.test(e.target.value)) {
+                                        setKeyInput(e.target.value)
+                                    } else { e.preventDefault() };
+                                }}
                                 ref={inputRef}
                                 type="text"
                                 className={`words--keys ${correct ? "words--keys--correct" : ''}`}
                                 id="keys"
                                 onKeyUp={(e) => handleKeyUp(e)}
+                                onKeyDown={(e) => handleKeyDown(e)}
                             />
                         </div>
                     </div>
